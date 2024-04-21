@@ -115,7 +115,7 @@ export const logIn = asyncHandler(async (req, res, next) => {
   };
 
   const accessToken = generateToken({
-    payload: { id: user._id, role: user.role },
+    payload: { id: user._id, role: user.role,userName:user.userName,lastName:user.lastName,firstName:user.firstName,email:user.email,image:user.image.secure_url },
     expiresIn: 60 * 30,
   });
 
@@ -174,4 +174,37 @@ export const resetPassword = asyncHandler(async (req, res, next) => {
   user.save();
 
   return res.status(200).json({ message: "password has been changed" });
+});
+
+export const profile = asyncHandler(async (req, res, next) => {
+
+  const { userId } = req.params;
+  const user = await User.findById(userId).select("-password -image.public_id -forgetCode -confirmEmail -wishList");
+
+  if (!user) {
+    return next(new Error(`user with id :${userId} is not found`));
+  }
+
+  return res.status(200).json({ user });
+});
+
+export const changePassword = asyncHandler(async (req, res, next) => {
+
+  const { oldPassword , newPassword } = req.body;
+
+  const user =await User.findById(req.user._id);
+
+  if (!user) {
+    return next(new Error(`user with id:${req.user._id} is not found`, { cause: 404 }));
+  };
+  const match =compare({plaintext:oldPassword,hashValue:user.password});
+  if (!match) {
+    return next(new Error(`old password is wrong`,{cause:400}));
+  }
+
+  const hashedPassword = hash({ plaintext: newPassword, salt: 9 });
+  user.password =hashedPassword;
+  user.save();
+
+  res.status(200).json({ message: "password changed successfully"});
 });

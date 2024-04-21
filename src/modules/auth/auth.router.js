@@ -3,6 +3,7 @@ import * as authController from './controller/auth.js'
 import * as validators from './auth.validation.js'
 import {validation} from '../../middleware/validation.js'
 import { fileUpload, fileValidation } from "../../utils/multer.js";
+import { auth } from "../../middleware/auth.js";
 
 const router = Router();
 
@@ -18,6 +19,10 @@ router.get("/requestNewConfirmMail/:newConfirmToken",authController.requestNewCo
 
 router.patch("/send-code",validation(validators.sendCode),authController.sendCode);
 
+router.patch("/change-password",validation(validators.changePassword),auth(["User","Admin"]),authController.changePassword);
+
 router.patch("/reset-password",validation(validators.resetPassword),authController.resetPassword);
+
+router.get("/:userId",authController.profile);
 
 export default router;

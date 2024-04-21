@@ -18,7 +18,7 @@ const initApp = (app, express) => {
       callback(new Error('Not allowed by CORS'))
       }
   }
-        }
+        };
     app.use(cors({}))
     //convert Buffer Data
     app.use(express.json({}))

@@ -21,6 +21,12 @@ export const resetPassword =joi.object({
     forgetCode:joi.string().min(6).max(6).required()
 });
 
+export const changePassword =joi.object({
+    newPassword:generalFields.password.required(),
+    oldPassword:generalFields.password.required(),
+    cpassword:generalFields.cPassword.valid(joi.ref("newPassword")).required(),
+});
+
 export const logIn =joi.object({
     email:generalFields.email,
     password:generalFields.password,
