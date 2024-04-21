@@ -28,6 +28,9 @@ const initApp = (app, express) => {
     app.use(`/city`, cityRouter)
     app.use(`/cart`, cartRouter)
     app.use(`/order`, orderRouter);
+    app.get(`/`, (req,res,next)=>{
+        res.status(200).json({message:"Welcome To E-Tourism"});
+    });
 
     app.all('*', (req, res, next) => {
         res.send("In-valid Routing Plz check url  or  method")
