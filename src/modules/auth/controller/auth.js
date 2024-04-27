@@ -30,7 +30,7 @@ export const signUp = asyncHandler(async (req, res, next) => {
   await generateConfirmEmail(email, req);
 
   const user = await User.create({ ...req.body });
-  res.status(201).json({ message: "Done", _id: user._id });
+  res.status(201).json({ message: "Created successfully", _id: user._id });
 });
 
 export const confirmationToken = asyncHandler(async (req, res, next) => {
@@ -116,16 +116,13 @@ export const logIn = asyncHandler(async (req, res, next) => {
 
   const accessToken = generateToken({
     payload: { id: user._id, role: user.role,userName:user.userName,lastName:user.lastName,firstName:user.firstName,email:user.email,image:user.image.secure_url },
-    expiresIn: 60 * 30,
-  });
-
-  const refreshToken = generateToken({
-    payload: { id: user._id, role: user.role },
     expiresIn: 60 * 60 * 24 * 30 * 365,
   });
 
+
   user.active = "online";
-  res.status(201).json({ message: "Done", accessToken, refreshToken });
+
+  res.status(200).json({ message: "Done", accessToken,aboutUser:{ id: user._id, role: user.role,userName:user.userName,lastName:user.lastName,firstName:user.firstName,email:user.email,image:user.image.secure_url } });
 });
 
 export const sendCode = asyncHandler(async (req, res, next) => {

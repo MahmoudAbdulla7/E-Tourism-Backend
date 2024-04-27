@@ -17,11 +17,11 @@ router.get("/unsubscribe/:newConfirmToken",authController.unsubscribe);
 
 router.get("/requestNewConfirmMail/:newConfirmToken",authController.requestNewConfirmMail);
 
-router.patch("/send-code",validation(validators.sendCode),authController.sendCode);
+router.post("/send-code",validation(validators.sendCode),authController.sendCode);
 
 router.patch("/change-password",validation(validators.changePassword),auth(["User","Admin"]),authController.changePassword);
 
-router.patch("/reset-password",validation(validators.resetPassword),authController.resetPassword);
+router.post("/reset-password",validation(validators.resetPassword),authController.resetPassword);
 
 router.get("/:userId",authController.profile);
 
