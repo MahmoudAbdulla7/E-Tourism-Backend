@@ -1,10 +1,11 @@
 import connectDB from '../DB/connection.js'
+import TouristDestination from '../DB/model/TouristDestination.model.js'
 import authRouter from './modules/auth/auth.router.js'
 import cartRouter from './modules/cart/cart.router.js'
 import cityRouter from './modules/city/city.router.js'
 import orderRouter from './modules/order/order.router.js'
 import userRouter from './modules/user/user.router.js'
-import { globalErrorHandling } from './utils/errorHandling.js'
+import { asyncHandler, globalErrorHandling } from './utils/errorHandling.js'
 import cors from 'cors';
 
 const initApp = (app, express) => {
@@ -32,8 +33,21 @@ const initApp = (app, express) => {
         res.status(200).json({message:"Welcome To E-Tourism"});
     });
 
+    app.get("/destinations",asyncHandler(async(req,res,next)=>{
+
+        const touristDestinations = await TouristDestination.find({})
+        .populate([{
+         path:'cityId',
+         select:"name image"
+        },{
+         path:'reviews',
+        }]);
+        
+         return res.status(200).json({touristDestinations});
+    }));
+
     app.all('*', (req, res, next) => {
-        res.send("In-valid Routing Plz check url  or  method")
+        next(new Error("In-valid Routing Plz check url  or  method"))
     })
     connectDB();
     app.use(globalErrorHandling)

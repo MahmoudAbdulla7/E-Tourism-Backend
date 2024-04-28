@@ -69,6 +69,8 @@ export const getCityById =asyncHandler(async(req,res,next)=>{
 
 });
 
+
+
 export const deleteCity = asyncHandler(async(req,res,next)=>{
 
     const city =await City.findByIdAndDelete(req.params.cityId);
@@ -99,3 +101,4 @@ export const deleteCity = asyncHandler(async(req,res,next)=>{
         return next(new Error('Failed to delete city and associated resources', { cause: 500 }));
     }
 });
+
