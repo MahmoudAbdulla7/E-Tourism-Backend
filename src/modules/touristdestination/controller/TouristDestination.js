@@ -139,18 +139,6 @@ req.params.touristDestinationId,
   return res.status(200).json({ message: "Done", newTouristDestination });
 });
 
-export const getTouristDestinations = asyncHandler(async(req,res,next)=>{
-
-   const touristDestinations = await TouristDestination.find({})
-   .populate([{
-    path:'cityId',
-    select:"name image"
-   },{
-    path:'reviews',
-   }]);
-   
-    return res.status(200).json({touristDestinations});
-});
 
 export const getTouristDestinationsByCityId = asyncHandler(async(req,res,next)=>{
 
@@ -170,7 +158,7 @@ export const getTouristDestinationsByCityId = asyncHandler(async(req,res,next)=>
 
 export const getTouristDestinationById = asyncHandler(async(req,res,next)=>{
 
-   const touristDestination= await TouristDestination.findById(req.params.destinationsId)
+   const touristDestination= await TouristDestination.findById(req.params.destinationId)
    .populate([{
     path:'cityId',
     select:"name image"

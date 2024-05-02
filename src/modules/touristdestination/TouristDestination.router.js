@@ -38,11 +38,9 @@ router.delete(
   TouristDestinationController.deleteTouristDestination
 );
 
-router.get("/all",TouristDestinationController.getTouristDestinations);
-
 router.get("/",TouristDestinationController.getTouristDestinationsByCityId);
 
-router.get("/:destinationsId",TouristDestinationController.getTouristDestinationsByCityId);
+router.get("/:destinationId",TouristDestinationController.getTouristDestinationById);
 
 router.use("/:touristDestinationId/review",reviewRouter);
 
