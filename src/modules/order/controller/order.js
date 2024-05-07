@@ -58,7 +58,7 @@ export const createOrder = asyncHandler(async (req, res, next) => {
     phone: req.user.phone,
     touristDestination: req.body.touristDestination,
     paymentType,
-    status: paymentType == "cash" ? "waitPayment" : "placed",
+    status: "waitPayment",
     DateOfVisit,
   };
 

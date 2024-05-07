@@ -26,7 +26,7 @@ const initApp = (app, express) => {
         if (req.orignalUrl=="order/webhook") {
             next();
         }else{
-            express.json({});
+            express.json({})(req,res,next)
         }
     });
     //Setup API Routing 
