@@ -106,7 +106,7 @@ export const webhook =asyncHandler(async(red, res) => {
 
     await Order.findByIdAndUpdate(orderId,{status:"rejected"});
     return res.status(400).json({message:"ticket is rejected"});
-
+    
   };
 
   const order=await Order.findByIdAndUpdate(orderId,{status:"placed"},{new:true});
@@ -125,7 +125,7 @@ export const webhook =asyncHandler(async(red, res) => {
     expiresIn: 60 * 60 * 24 * 365,
   });
 
-  const ticketLink = `https://e-tourism-backend.vercel.app/order/${token}`;
+  const ticketLink = `${req.protocol}://${req.headers.host}/order/${token}`;
   const html =`
   <h2>Your ticket for ${order.touristDestination.name.toUpperCase()}</h2>
   <a href="${ticketLink}">Click Here</a>
@@ -136,7 +136,7 @@ export const webhook =asyncHandler(async(red, res) => {
     subject: `${order.touristDestination.name.toUpperCase()} Ticket`,
     html
   });
-  res.status(200).json({message :"tickect is placed",order});
+  res.status(200).json({message :"tickect is placed"});
 })
 
 
