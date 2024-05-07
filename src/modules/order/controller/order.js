@@ -114,8 +114,8 @@ export const webhook =asyncHandler(async(red, res) => {
 
   const token = generateToken({
     payload: {
-      userId: order.userId,
-      orderId: order._id,
+      userId: user._id,
+      orderId,
       userName:user.userName,
       orderStatus: order.status,
       touristDestinationName: order.touristDestination.name,
@@ -125,7 +125,7 @@ export const webhook =asyncHandler(async(red, res) => {
     expiresIn: 60 * 60 * 24 * 365,
   });
 
-  const ticketLink = `${req.protocol}://${req.headers.host}/order/${token}`;
+  const ticketLink = `https://e-tourism-backend.vercel.app/order/${token}`;
   const html =`
   <h2>Your ticket for ${order.touristDestination.name.toUpperCase()}</h2>
   <a href="${ticketLink}">Click Here</a>
