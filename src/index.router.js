@@ -23,7 +23,7 @@ const initApp = (app, express) => {
     app.use(cors({}))
     //convert Buffer Data
     app.use((req,res,next)=>{
-        if (req.orignalUrl=="order/webhook") {
+        if (req.originalUrl=="order/webhook") {
             next();
         }else{
             express.json({})(req,res,next)

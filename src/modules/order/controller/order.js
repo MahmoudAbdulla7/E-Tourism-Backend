@@ -102,7 +102,7 @@ export const webhook =asyncHandler(async(red, res) => {
   // Handle the event
 
   const {orderId}=event.data.object.metadata;
-  if (event.type!=='checkout.session.completed') {
+  if (event.type !== 'checkout.session.completed') {
 
     await Order.findByIdAndUpdate(orderId,{status:"rejected"});
     return res.status(400).json({message:"ticket is rejected"});
