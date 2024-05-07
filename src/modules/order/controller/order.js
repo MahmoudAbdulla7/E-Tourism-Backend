@@ -109,9 +109,35 @@ export const webhook =asyncHandler(async(red, res) => {
     
   };
 
-  const order=await Order.findByIdAndUpdate(orderId,{status:"placed"},{new:true})
+  const order=await Order.findByIdAndUpdate(orderId,{status:"placed"},{new:true});
+  const user=User.findById(order.userId);
 
-  res.status(200).json({message :"tickect is placed",order});
+  const token = generateToken({
+    payload: {
+      userId: order.userId,
+      orderId: order._id,
+      userName:user.userName,
+      orderStatus: order.status,
+      touristDestinationName: order.touristDestination.name,
+      DateOfVisit:order.DateOfVisit,
+    },
+    signature: process.env.ORDER_TOKEN_SIGNATURE,
+    expiresIn: 60 * 60 * 24 * 365,
+  });
+
+  const ticketLink = `${req.protocol}://${req.headers.host}/order/${token}`;
+  const html =`
+  <h2>Your ticket for ${order.touristDestination.name.toUpperCase()}</h2>
+  <a href="${ticketLink}">Click Here</a>
+  `;
+
+  await sendEmail({
+    to:user.email,
+    subject: `${order.touristDestination.name.toUpperCase()} Ticket`,
+    html
+  });
+
+  res.status(200).json({message :"tickect is placed"});
 })
 
 
