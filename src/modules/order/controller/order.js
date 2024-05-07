@@ -87,58 +87,68 @@ export const createOrder = asyncHandler(async (req, res, next) => {
 });
 
 
-export const webhook =asyncHandler(async(red, res) => {
-  const sig = red.headers['stripe-signature'];
-  let stripe = new Stripe(process.env.STRIPE_KEY);
+export const webhook = asyncHandler(async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  const stripe = new Stripe(process.env.STRIPE_KEY);
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(red.body, sig, process.env.endpointSecret);
+    event = stripe.webhooks.constructEvent(req.body, sig, process.env.endpointSecret);
   } catch (err) {
     res.status(400).send(`Webhook Error: ${err.message}`);
     return;
   }
 
-  // Handle the event
+  const { orderId } = event.data.object.metadata;
 
-  const {orderId}=event.data.object.metadata;
   if (event.type !== 'checkout.session.completed') {
+    await Order.findByIdAndUpdate(orderId, { status: 'rejected' });
+    return res.status(400).json({ message: 'Ticket is rejected' });
+  }
 
-    await Order.findByIdAndUpdate(orderId,{status:"rejected"});
-    return res.status(400).json({message:"ticket is rejected"});
-    
-  };
+  const order = await Order.findByIdAndUpdate(orderId, { status: 'placed' }, { new: true });
 
-  const order=await Order.findByIdAndUpdate(orderId,{status:"placed"},{new:true});
-  const user=User.findById(order.userId);
+  if (!order) {
+    res.status(404).json({ message: 'Order not found' });
+    return;
+  }
 
+  const user = await User.findById(order.userId);
+
+  if (!user) {
+    res.status(404).json({ message: 'User not found' });
+    return;
+  }
+
+  // Generate a token for the order ticket
   const token = generateToken({
     payload: {
       userId: user._id,
       orderId,
-      userName:user.userName,
+      userName: user.userName,
       orderStatus: order.status,
       touristDestinationName: order.touristDestination.name,
-      DateOfVisit:order.DateOfVisit,
+      dateOfVisit: order.dateOfVisit,
     },
     signature: process.env.ORDER_TOKEN_SIGNATURE,
     expiresIn: 60 * 60 * 24 * 365,
   });
 
   const ticketLink = `https://e-tourism-backend.vercel.app/order/${token}`;
-  const html =`
-  <h2>Your ticket for ${order.touristDestination.name.toUpperCase()}</h2>
-  <a href="${ticketLink}">Click Here</a>
+  const emailContent = `
+    <h2>Your ticket for ${order.touristDestination.name.toUpperCase()}</h2>
+    <p>Click the link below to view your ticket:</p>
+    <a href="${ticketLink}">View Ticket</a>
   `;
 
   await sendEmail({
-    to:user.email,
+    to: user.email,
     subject: `${order.touristDestination.name.toUpperCase()} Ticket`,
-    html
+    html: emailContent,
   });
 
-  res.status(200).json({message :"tickect is placed"});
-})
+  res.status(200).json({ message: 'Ticket is placed' });
+});
 
 
 
