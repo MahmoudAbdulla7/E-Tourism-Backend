@@ -109,7 +109,7 @@ export const webhook =asyncHandler(async(red, res) => {
     
   };
 
-  const order=await Order.findByIdAndUpdate(orderId,{status:"placed"},{new:true});
+  const order=await Order.findByIdAndUpdate(orderId,{status:"placed"},{new:true})
 
   res.status(200).json({message :"tickect is placed",order});
 })
