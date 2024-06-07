@@ -8,7 +8,7 @@ export const createOrder =joi.object({
         'date.min': 'Date must be in the future.',
         'any.required': 'Event date is required.'
     }),
-
+    faceId:joi.string().min(36).max(38).required(),
     touristDestination:joi.object({
         touristDestinationId:generalFields.id,
         quantity:joi.number().min(1).positive().integer().required()

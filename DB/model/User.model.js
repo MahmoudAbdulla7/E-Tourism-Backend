@@ -44,6 +44,7 @@ const userSchema = new Schema(
       secure_url: { type: String },
     },
     DOB: String,
+    faceId:String,
     gender: { type: String, default: "male", enum: ["male", "female"] },
     country: String,
     forgetCode: { type: String, default: null },

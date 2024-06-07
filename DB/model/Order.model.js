@@ -12,7 +12,7 @@ const OrderSchema = new mongoose.Schema(
         unitPrice:{type:Number,default:1,required:true},
         finalPrice:{type:Number,default:1,required:true}
     },
-
+    faceId:{type:String,required:true},
     paymentType:{type:String,default:"cash",enum:["cash","card"]},
     status:{type:String,default:'placed',enum:["waitPayment",'placed','canceled','rejected','onWay','delivered']},
     reason:String,

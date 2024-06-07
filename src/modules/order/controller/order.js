@@ -58,6 +58,7 @@ export const createOrder = asyncHandler(async (req, res, next) => {
     phone: req.user.phone,
     touristDestination: req.body.touristDestination,
     paymentType,
+    faceId:req.body.faceId,
     status: "waitPayment",
     DateOfVisit,
   };
@@ -85,7 +86,6 @@ export const createOrder = asyncHandler(async (req, res, next) => {
 
   return res.status(200).json({ message: "Done", order,url:session.url });
 });
-
 
 export const webhook = asyncHandler(async (req, res) => {
   const sig = req.headers['stripe-signature'];
@@ -129,6 +129,7 @@ export const webhook = asyncHandler(async (req, res) => {
       orderStatus: order.status,
       touristDestinationName: order.touristDestination.name,
       dateOfVisit: order.dateOfVisit,
+      faceId: order.faceId,
     },
     signature: process.env.ORDER_TOKEN_SIGNATURE,
     expiresIn: 60 * 60 * 24 * 365,
@@ -136,9 +137,23 @@ export const webhook = asyncHandler(async (req, res) => {
 
   const ticketLink = `https://e-tourism-backend.vercel.app/order/${token}`;
   const emailContent = `
-    <h2>Your ticket for ${order.touristDestination.name.toUpperCase()}</h2>
-    <p>Click the link below to view your ticket:</p>
-    <a href="${ticketLink}">View Ticket</a>
+ <body style="color:white; background-color: rgba(33, 36, 41, 1);">
+
+<h2>Hello!</h2>
+<h3>Thank you for choosing us, and we look forward to welcoming you soon!</h3>
+<div style="background-color: rgba(24, 25, 29, 1); text-align: center; padding: 20px;">
+  <h3 >Your ticket to the ${order.touristDestination.name.toUpperCase()} has been successfully booked</h3>
+  <p style="color: red;">
+    <a href="${ticketLink}" style="border-radius: 25px; padding: 3px 15px; display: flex; margin: auto; justify-content: center; background-color: rgba(59, 158, 245, 1); color: black; text-decoration: none;">
+      View Your Ticket
+      <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="width: 20px; margin-left: 3px;">
+        <path d="M490.18,181.4l-44.13-44.13a20,20,0,0,0-27-1,30.81,30.81,0,0,1-41.68-1.6h0A30.81,30.81,0,0,1,375.77,93a20,20,0,0,0-1-27L330.6,21.82a19.91,19.91,0,0,0-28.13,0L232.12,92.16a39.87,39.87,0,0,0-9.57,15.5,7.71,7.71,0,0,1-4.83,4.83,39.78,39.78,0,0,0-15.5,9.58L21.82,302.47a19.91,19.91,0,0,0,0,28.13L66,374.73a20,20,0,0,0,27,1,30.69,30.69,0,0,1,43.28,43.28,20,20,0,0,0,1,27l44.13,44.13a19.91,19.91,0,0,0,28.13,0l180.4-180.4a39.82,39.82,0,0,0,9.58-15.49,7.69,7.69,0,0,1,4.84-4.84,39.84,39.84,0,0,0,15.49-9.57l70.34-70.35A19.91,19.91,0,0,0,490.18,181.4ZM261.81,151.75a16,16,0,0,1-22.63,0l-11.51-11.51a16,16,0,0,1,22.63-22.62l11.51,11.5A16,16,0,0,1,261.81,151.75Zm44,44a16,16,0,0,1-22.62,0l-11-11a16,16,0,1,1,22.63-22.63l11,11A16,16,0,0,1,305.83,195.78Zm44,44a16,16,0,0,1-22.63,0l-11-11a16,16,0,0,1,22.63-22.62l11,11A16,16,0,0,1,349.86,239.8Zm44.43,44.54a16,16,0,0,1-22.63,0l-11.44-11.5a16,16,0,1,1,22.68-22.57l11.45,11.49A16,16,0,0,1,394.29,284.34Z"/>
+      </svg>
+    </a>
+  </p>
+</div>
+
+</body>
   `;
 
   await sendEmail({
@@ -149,9 +164,6 @@ export const webhook = asyncHandler(async (req, res) => {
 
   res.status(200).json({ message: 'Ticket is placed' });
 });
-
-
-
 
 export const getTicket = asyncHandler(async (req, res, next) => {
   const { token } = req.params;
