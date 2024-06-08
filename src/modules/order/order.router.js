@@ -12,7 +12,7 @@ router.post('/',validation(validator.createOrder),auth(endPoint.create), orderCo
 
 router.get('/:token',validation(validator.getTicket), orderController.getTicket);
 
-router.get('/',auth(endPoint.getAll), orderController.getAllOrders);
+router.get('/filter-by-day/:filterByDay',auth(endPoint.getAll), orderController.getAllOrders);
 
 router.patch('/:orderId',validation(validator.cancel),auth(endPoint.cancel), orderController.cancelOrder);
 

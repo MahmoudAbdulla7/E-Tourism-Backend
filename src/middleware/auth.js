@@ -5,6 +5,7 @@ import { asyncHandler } from "../utils/errorHandling.js";
 export const roles = {
   Admin: "Admin",
   User: "User",
+  Inspector:"Inspector"
 };
 
 // ========= authorization && authontication ===============

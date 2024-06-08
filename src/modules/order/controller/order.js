@@ -58,7 +58,7 @@ export const createOrder = asyncHandler(async (req, res, next) => {
     phone: req.user.phone,
     touristDestination: req.body.touristDestination,
     paymentType,
-    faceId:req.body.faceId,
+    faceId: req.body.faceId,
     status: "waitPayment",
     DateOfVisit,
   };
@@ -69,31 +69,38 @@ export const createOrder = asyncHandler(async (req, res, next) => {
     return next(new Error("faild to create order ", { cause: 500 }));
   }
 
-  const session= await payment({
+  const session = await payment({
     customer_email: req.user.email,
     metadata: {
       orderId: order._id.toString(),
     },
     cancel_url: `${process.env.CANCEL_URL}?orderId=${order._id.toString()}`,
-    line_items:  [{
-      price_data: {
-        currency: "usd",
-        product_data: { name:order.touristDestination.name },
-        unit_amount:order.touristDestination.unitPrice*100,
-      },quantity:order.touristDestination.quantity
-    }],
+    line_items: [
+      {
+        price_data: {
+          currency: "usd",
+          product_data: { name: order.touristDestination.name },
+          unit_amount: order.touristDestination.unitPrice * 100,
+        },
+        quantity: order.touristDestination.quantity,
+      },
+    ],
   });
 
-  return res.status(200).json({ message: "Done", order,url:session.url });
+  return res.status(200).json({ message: "Done", order, url: session.url });
 });
 
 export const webhook = asyncHandler(async (req, res) => {
-  const sig = req.headers['stripe-signature'];
+  const sig = req.headers["stripe-signature"];
   const stripe = new Stripe(process.env.STRIPE_KEY);
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(req.body, sig, process.env.endpointSecret);
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      sig,
+      process.env.endpointSecret
+    );
   } catch (err) {
     res.status(400).send(`Webhook Error: ${err.message}`);
     return;
@@ -101,22 +108,26 @@ export const webhook = asyncHandler(async (req, res) => {
 
   const { orderId } = event.data.object.metadata;
 
-  if (event.type !== 'checkout.session.completed') {
-    await Order.findByIdAndUpdate(orderId, { status: 'rejected' });
-    return res.status(400).json({ message: 'Ticket is rejected' });
+  if (event.type !== "checkout.session.completed") {
+    await Order.findByIdAndUpdate(orderId, { status: "rejected" });
+    return res.status(400).json({ message: "Ticket is rejected" });
   }
 
-  const order = await Order.findByIdAndUpdate(orderId, { status: 'placed' }, { new: true });
+  const order = await Order.findByIdAndUpdate(
+    orderId,
+    { status: "placed" },
+    { new: true }
+  );
 
   if (!order) {
-    res.status(404).json({ message: 'Order not found' });
+    res.status(404).json({ message: "Order not found" });
     return;
   }
 
   const user = await User.findById(order.userId);
 
   if (!user) {
-    res.status(404).json({ message: 'User not found' });
+    res.status(404).json({ message: "User not found" });
     return;
   }
 
@@ -162,7 +173,7 @@ background-color: #072248; color: white; text-decoration: none;">
     html: emailContent,
   });
 
-  res.status(200).json({ message: 'Ticket is placed' });
+  res.status(200).json({ message: "Ticket is placed" });
 });
 
 export const getTicket = asyncHandler(async (req, res, next) => {
@@ -171,9 +182,11 @@ export const getTicket = asyncHandler(async (req, res, next) => {
     token,
     signature: process.env.ORDER_TOKEN_SIGNATURE,
   });
+  //generate front-end link
+  const frontEndLink=`${process.env.Front_End}home/booking/${token}`
 
   try {
-    const url = await QRCode.toDataURL(`${JSON.stringify(ticketData)}`);
+    const url = await QRCode.toDataURL(`${frontEndLink}`);
 
     return res.status(200).send(`
         <!DOCTYPE html>
@@ -198,7 +211,9 @@ export const getTicket = asyncHandler(async (req, res, next) => {
         <img src="${url}" style="width:75px" alt="Ticket Link">
       </div>
 
-      <div style="display: block;content: 'BB94CF';position: absolute;box-sizing: border-box;color: #ffffff;border-radius: 10px;transform: rotate(-90deg);font-size: 17px;/* font-family: monospace; */text-align: center;line-height: 1;width: 123px;height: 185px;padding-top: 162px;top: -36px;left: 8px;background: linear-gradient(to bottom, transparent 155px, #000000 155px, #000000 158px, transparent 158px);/* border: 3px solid #b1bde9; */">${ticketData.touristDestinationName}</div>
+      <div style="display: block;content: 'BB94CF';position: absolute;box-sizing: border-box;color: #ffffff;border-radius: 10px;transform: rotate(-90deg);font-size: 17px;/* font-family: monospace; */text-align: center;line-height: 1;width: 123px;height: 185px;padding-top: 162px;top: -36px;left: 8px;background: linear-gradient(to bottom, transparent 155px, #000000 155px, #000000 158px, transparent 158px);/* border: 3px solid #b1bde9; */">${
+        ticketData.touristDestinationName
+      }</div>
       
     </div>
   </div>
@@ -271,6 +286,28 @@ export const updateByAdmin = asyncHandler(async (req, res, next) => {
 });
 
 export const getAllOrders = asyncHandler(async (req, res, next) => {
+  const { filterByDay } = req.params;
+
+  if (filterByDay==="true") {
+    const date = new Date();
+    date.setDate(date.getDate() - 1);
+    const prevDay =date.toISOString();
+
+    date.setDate(date.getDate() + 1);
+    const nextDay=date.toISOString()
+
+    const filteredOreders = await Order.find({DateOfVisit:{
+      $gte:prevDay,
+      $lte:nextDay,
+    }}).populate([
+      {
+        path: "userId",
+        select: "-forgetCode -confirmEmail -password",
+      },
+    ]);
+    return res.status(200).json({ filteredOreders });
+  }
+
   const orders = await Order.find({}).populate([
     {
       path: "userId",
