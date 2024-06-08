@@ -10,11 +10,13 @@ const router = Router();
 
 router.post('/',validation(validator.createOrder),auth(endPoint.create), orderController.createOrder);
 
+router.patch('/:orderId',validation(validator.cancel),auth(endPoint.cancel), orderController.cancelOrder);
+
 router.get('/:token',validation(validator.getTicket), orderController.getTicket);
 
-router.get('/filter-by-day/:filterByDay',auth(endPoint.getAll), orderController.getAllOrders);
+router.get('/filter-by-day/:filterByDay',validation(validator.filterTicketsByDay),auth(endPoint.getAll), orderController.getAllOrders);
 
-router.patch('/:orderId',validation(validator.cancel),auth(endPoint.cancel), orderController.cancelOrder);
+router.get('/filter-by-id/:id',validation(validator.getSpecificTicket),auth(endPoint.getAll), orderController.getSpecificTicket);
 
 router.patch('/:orderId',validation(validator.update),auth(endPoint.update), orderController.updateByAdmin);
 

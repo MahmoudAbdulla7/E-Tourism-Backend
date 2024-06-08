@@ -28,3 +28,12 @@ export const update =joi.object({
     status:joi.string().valid('onWay','delivered').required(),
     orderId:generalFields.id.required()
 }).required();
+
+export const getSpecificTicket =joi.object({
+    id:generalFields.id.required()
+}).required();
+
+
+export const filterTicketsByDay =joi.object({
+    filterByDay:joi.string().required()
+}).required();

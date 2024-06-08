@@ -317,3 +317,13 @@ export const getAllOrders = asyncHandler(async (req, res, next) => {
 
   return res.status(200).json({ orders });
 });
+
+
+export const getSpecificTicket = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+
+  const orders = await Order.findById(id,"-touristDestination -paymentType");
+
+
+  return res.status(200).json({ orders });
+});
