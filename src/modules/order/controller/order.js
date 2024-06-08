@@ -146,7 +146,7 @@ export const webhook = asyncHandler(async (req, res) => {
             background-color: rgba(24, 25, 29, 1); text-align: center; padding: 20px;">
   <h3 >Your ticket to the ${order.touristDestination.name.toUpperCase()} has been successfully booked</h3>
   <p>
-    <a href="${ticketLink}" style="text-align: center; border-radius: 25px; padding: 4px 30px; margin: auto; 
+    <a href="${ticketLink}" style="text-align: center; border-radius: 25px; padding: 8px 30px; margin: auto; 
 background-color: #072248; color: white; text-decoration: none;">
       <strong>View Your Ticket</strong>
     </a>
@@ -181,13 +181,30 @@ export const getTicket = asyncHandler(async (req, res, next) => {
         <head>
         <title>${ticketData.touristDestinationName.toUpperCase()} Ticket</title>
         </head>
-        <body>
+        <body style="line-height: 1; margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline;">
 
-        <h1>${ticketData.touristDestinationName.toUpperCase()} Ticket</h1>
-        <p>Scan QR Code</p>
-        <img src="${url}" alt="Ticket Link"></img>
+  <div id="raffle-red" class="entry raffle" style="background:#b1bde9; text-align: center; min-height: 100vh; position: relative; height: 100%; float: left; width: 100%;">
+    <div class="no-scale" style="width: 220px; height: 110px; margin-left: -110px; margin-top: -55px; background-repeat: no-repeat; position: absolute; left: 50%; top: 50%; background-image: radial-gradient(circle at top left, transparent 17px, #dc143c 17px), radial-gradient(circle at top right, transparent 17px, #dc143c 17px), radial-gradient(circle at bottom left, transparent 17px, #dc143c 17px), radial-gradient(circle at bottom right, transparent 17px, #dc143c 17px); box-shadow: 0 38px 14px -35px rgba(0,0,0,0.3); background-size: 50% 50%; background-position: top left, top right, bottom left, bottom right;">
 
-        </body>
+      <div style="display: block; content: ''; position: absolute; box-sizing: border-box; color: #333;">
+        
+      </div>
+      <div style="display: block; content: ''; position: absolute; box-sizing: border-box; color: #333;">
+        
+      </div>
+
+      <div style="font-family: 'HelveticaNeue-CondensedBold', 'Arial Narrow', Impact, 'Roboto', sans-serif; letter-spacing: 2px; text-transform: uppercase; display: block; content: 'ticket'; position: absolute; box-sizing: border-box; color: #b1bde9; width: 234px; height: 76px; padding-left: 40px; left: -7px; top: 17px; background-size: 7px 7px; background-repeat: repeat-y; background-position: 0 0, 0 0, 100% 0, 100% 0; background-image: linear-gradient(45deg, transparent 75%, #dc143c 75%), linear-gradient(135deg, transparent 75%, #dc143c 75%), linear-gradient(-45deg, transparent 75%, #dc143c 75%), linear-gradient(-135deg, transparent 75%, #dc143c 75%); line-height: 1.9; font-size: 42px; text-align: left;">
+         <img src="${url}" alt="Ticket Link"></img>
+      </div>
+
+      <div style="display: block; content: 'BB94CF'; position: absolute; box-sizing: border-box; color: #b1bde9; border-radius: 10px; transform: rotate(-90deg); font-size: 14px; font-family: monospace; text-align: center; line-height: 1; width: 75px; height: 185px; padding-top: 162px; top: -37px; left: 72px; background: linear-gradient(to bottom, transparent 155px, #b1bde9 155px, #b1bde9 158px, transparent 158px); border: 3px solid #b1bde9;">
+      ${ticketData.touristDestinationName}
+      </div>
+
+    </div>
+  </div>
+
+</body>
         </html>
     `);
   } catch (err) {
