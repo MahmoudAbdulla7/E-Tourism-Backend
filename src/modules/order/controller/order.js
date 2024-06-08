@@ -198,8 +198,8 @@ export const getTicket = asyncHandler(async (req, res, next) => {
         <img src="${url}" style="width:75px" alt="Ticket Link"></img>
       </div>
 
-      <div style="display: block;content: 'BB94CF';position: absolute;box-sizing: border-box;color: #ffffff;border-radius: 10px;transform: rotate(-90deg);font-size: 17px;/* font-family: monospace; */text-align: center;line-height: 1;width: 123px;height: 185px;padding-top: 162px;top: -36px;left: 8px;background: linear-gradient(to bottom, transparent 155px, #b1bde9 155px, #b1bde9 158px, transparent 158px);/* border: 3px solid #b1bde9; */">the grand egyptian museumes</div>
-      ${ticketData.touristDestinationName}
+      <div style="display: block;content: 'BB94CF';position: absolute;box-sizing: border-box;color: #ffffff;border-radius: 10px;transform: rotate(-90deg);font-size: 17px;/* font-family: monospace; */text-align: center;line-height: 1;width: 123px;height: 185px;padding-top: 162px;top: -36px;left: 8px;background: linear-gradient(to bottom, transparent 155px, #b1bde9 155px, #b1bde9 158px, transparent 158px);/* border: 3px solid #b1bde9; */">${ticketData.touristDestinationName}</div>
+      
     </div>
   </div>
     </body>
