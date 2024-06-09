@@ -183,7 +183,7 @@ export const getTicket = asyncHandler(async (req, res, next) => {
     signature: process.env.ORDER_TOKEN_SIGNATURE,
   });
   //generate front-end link
-  const frontEndLink=`${process.env.Front_End}home/booking/${token}`
+  const frontEndLink=`${process.env.Front_End}inspector/${token}`
 
   try {
     const url = await QRCode.toDataURL(`${frontEndLink}`);
