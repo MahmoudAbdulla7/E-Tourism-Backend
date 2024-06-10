@@ -41,3 +41,10 @@ export const deleteComment = asyncHandler(async(req,res,next)=>{
     return res.status(200).json({message:"comment is deleted successfully"});
 
 });
+
+export const getAllReviews = asyncHandler(async(req,res,next)=>{
+
+    const reviews= await Review.find({touristDestinationId:req.params.touristDestinationId});
+    return res.status(200).json({reviews});
+
+});

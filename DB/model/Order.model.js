@@ -14,7 +14,7 @@ const OrderSchema = new mongoose.Schema(
     },
     faceId:{type:String,required:true},
     paymentType:{type:String,default:"cash",enum:["cash","card"]},
-    status:{type:String,default:'placed',enum:["waitPayment",'placed','canceled','rejected','onWay','delivered']},
+    status:{type:String,default:'placed',enum:["waitPayment",'placed','canceled','rejected','delivered']},
     reason:String,
     updatedBy:{type:Types.ObjectId,ref:"User"},
     DateOfVisit:{type:Date,required:true}

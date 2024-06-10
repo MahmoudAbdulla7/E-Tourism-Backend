@@ -13,4 +13,6 @@ router.put('/:reviewId',validation(validators.updateReview),auth(endPoint.update
 
 router.delete('/:reviewId',validation(validators.updateReview),auth(endPoint.delete), reviewController.deleteComment);
 
+router.get('/', reviewController.getAllReviews);
+
 export default router;
