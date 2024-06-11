@@ -56,6 +56,7 @@ export const updateTouristDestination = joi
   touristDestinationId: generalFields.id.required(),
   type: joi.string().valid("Museum", "Monument"),
   name: joi.string().min(2).max(25),
+  video: joi.string(),
   description: joi.string().min(5),
   location: joi.string().custom(validateLocation),
   ticketPrice: joi.number().min(10),

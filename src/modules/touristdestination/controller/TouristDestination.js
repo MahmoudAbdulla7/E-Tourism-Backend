@@ -61,7 +61,7 @@ export const updateTouristDestination = asyncHandler(async (req, res, next) => {
 
   if (req.body.name) {
     const name = req.body.name.toLowerCase();
-
+    
     if (touristDestination.name == name) {
       return next(
         new Error(
