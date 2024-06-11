@@ -262,6 +262,9 @@ export const cancelOrder = asyncHandler(async (req, res, next) => {
 export const updateByInspector = asyncHandler(async (req, res, next) => {
   const { status } = req.body;
   const { orderId } = req.params;
+  if (status =="delivered") {
+    return new Error(`Ticket is already delivered`, { cause: 409 });
+  }
   const order = await Order.findOne({ _id: orderId });
 
   if (!order) {
@@ -275,7 +278,7 @@ export const updateByInspector = asyncHandler(async (req, res, next) => {
     { status, updatedBy: req.user._id }
   );
 
-  if (updatedOrder.status !== status) {
+  if (updatedOrder.status == status) {
     return next(new Error(`fail to update this order `, { cause: 400 }));
   }
 
