@@ -18,7 +18,7 @@ router.get('/filter-by-day/:filterByDay',validation(validator.filterTicketsByDay
 
 router.get('/filter-by-id/:id',validation(validator.getSpecificTicket),auth(endPoint.getAll), orderController.getSpecificTicket);
 
-router.patch('/:orderId',validation(validator.update),auth(endPoint.update), orderController.updateByAdmin);
+router.patch('/update-by-inspector/:orderId',validation(validator.update),auth(endPoint.update), orderController.updateByInspector);
 
 router.post('/webhook', express.raw({type: 'application/json'}), orderController.webhook);
 

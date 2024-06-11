@@ -259,7 +259,7 @@ export const cancelOrder = asyncHandler(async (req, res, next) => {
   return res.status(200).json({ message: "order is canceled successfully" });
 });
 
-export const updateByAdmin = asyncHandler(async (req, res, next) => {
+export const updateByInspector = asyncHandler(async (req, res, next) => {
   const { status } = req.body;
   const { orderId } = req.params;
   const order = await Order.findOne({ _id: orderId });
