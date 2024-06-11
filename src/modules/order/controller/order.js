@@ -210,7 +210,9 @@ export const getTicket = asyncHandler(async (req, res, next) => {
        <img src="${url}" style="width:75px" alt="Ticket Link">
       </div>
 
-      <div style="display: block;content: 'BB94CF';position: absolute;box-sizing: border-box;color: #ffffff;border-radius: 10px;transform: rotate(-90deg);font-size: 18px;/* font-family: monospace; */text-align: center;line-height: 1;width: 153px;height: 192px;padding-top: 163px;top: -36px;left: 8px;background: linear-gradient(to bottom, transparent 155px, #000000 155px, #000000 158px, transparent 158px);/* border: 3px solid #b1bde9; */">${ticketData.touristDestinationName}</div>
+      <div style="display: block;content: 'BB94CF';position: absolute;box-sizing: border-box;color: #ffffff;border-radius: 10px;transform: rotate(-90deg);font-size: 18px;/* font-family: monospace; */text-align: center;line-height: 1;width: 153px;height: 192px;padding-top: 163px;top: -36px;left: 8px;background: linear-gradient(to bottom, transparent 155px, #000000 155px, #000000 158px, transparent 158px);/* border: 3px solid #b1bde9; */">${
+        ticketData.touristDestinationName
+      }</div>
       
     </div>
   </div>
@@ -262,10 +264,12 @@ export const cancelOrder = asyncHandler(async (req, res, next) => {
 export const updateByInspector = asyncHandler(async (req, res, next) => {
   const { status } = req.body;
   const { orderId } = req.params;
-  if (status =="delivered") {
-    return new Error(`Ticket is already delivered`, { cause: 409 });
-  }
   const order = await Order.findOne({ _id: orderId });
+
+  if (order?.status == "delivered") {
+    console.log("error");
+    return next( new Error(`Ticket is already ${order.status}`, { cause: 409 }));
+  }
 
   if (!order) {
     return next(
@@ -325,7 +329,13 @@ export const getAllOrders = asyncHandler(async (req, res, next) => {
 export const getSpecificTicket = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
 
-  const orders = await Order.findById(id, " -paymentType").populate([{path:"userId",select:"-email -userName -wishList -forgetCode -confirmEmail -active -role -password "}]);
+  const orders = await Order.findById(id, " -paymentType").populate([
+    {
+      path: "userId",
+      select:
+        "-email -userName -wishList -forgetCode -confirmEmail -active -role -password ",
+    },
+  ]);
 
   return res.status(200).json({ orders });
 });
