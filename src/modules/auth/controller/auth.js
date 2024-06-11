@@ -140,12 +140,46 @@ export const sendCode = asyncHandler(async (req, res, next) => {
   };
 
   const html = `
-                <br/>
-                <br/>
-                <p>code for reset password</p>
-                <p>${user.forgetCode}</p>
-                <br/>
-                <br/>`;
+
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation Code</title>
+</head>
+<body style="font-family: Arial, sans-serif;  margin: 0; padding: 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f4f4f4; padding: 20px;">
+        <tr>
+            <td align="center">
+                <table width="600" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                    <tr>
+                        <td style="padding: 20px; text-align: center; background-color: #131550; color: #ffffff; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                            <h1 style="margin: 0; font-size: 24px;">Egypt Here</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 20px; text-align: center;">
+                            <h2 style="margin: 0 0 20px 0; font-size: 20px; color: #333333;">Reset Password</h2>
+                            <p style="margin: 0 0 20px 0; font-size: 16px; color: #666666;">Your confirmation code is:</p>
+                            <p style="margin: 0 0 20px 0; font-size: 24px; font-weight: bold;  color: #131550;">${user.forgetCode}</p>
+                            <p style="margin: 0 0 20px 0; font-size: 16px; color: #666666;">Please use the verification code below to reset password.
+</p>
+                            <p style="margin: 0 0 20px 0; font-size: 16px; color: #666666;">If you did not request this code, please ignore this email.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 20px; text-align: center; background-color: #f4f4f4; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">
+                            <p style="margin: 0; font-size: 14px; color: #666666;">&copy; 2024 Egypt Here. All rights reserved.</p>
+                            
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>`;
 
   await sendEmail({ to: email, subject: "forget password", html });
 

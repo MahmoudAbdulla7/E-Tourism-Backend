@@ -193,11 +193,6 @@ export const deleteTouristDestination = asyncHandler(async(req,res,next)=>{
   if (!touristDestination) {
       return next(new Error(`touristDestination not found with id:${req.params.touristDestinationId}`, { cause: 404 }));
   };
-
-  const city =await City.findByIdAndDelete(req.params.cityId);
-  if (!city) {
-      return next(new Error(`city not found with id:${req.params.cityId}`, { cause: 404 }));
-  };
   
   try {
       const folderPath = `${process.env.APP_NAME}/cities/${city.customId}/${touristDestination.customId}/`;
