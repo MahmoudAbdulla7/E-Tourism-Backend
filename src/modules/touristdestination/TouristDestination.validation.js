@@ -19,6 +19,7 @@ export const createTouristDestination = joi
     name: joi.string().min(2).max(25).required(),
     description: joi.string().min(5).required(),
     location: joi.string().custom(validateLocation).required(),
+    video: joi.string().required(),
     ticketPrice: joi.string().required(),
 
     file:joi

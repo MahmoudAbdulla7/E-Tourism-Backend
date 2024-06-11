@@ -7,6 +7,7 @@ const touristDestinationSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
     location: { type: String },
+    video: { type: String },
     ticketPrice: { type: String },
     image: { public_id:String,secure_url:String },
     subImages: [{ public_id:String,secure_url:String }],

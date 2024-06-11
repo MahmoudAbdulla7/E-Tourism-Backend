@@ -189,8 +189,8 @@ export const getTicket = asyncHandler(async (req, res, next) => {
     const url = await QRCode.toDataURL(`${frontEndLink}`);
 
     return res.status(200).send(`
-              <html>
-        <head>
+
+      <html><head>
         <title>${ticketData.touristDestinationName.toUpperCase()} Ticket</title>
         </head>
 
@@ -198,26 +198,22 @@ export const getTicket = asyncHandler(async (req, res, next) => {
 
   <div id="raffle-red" class="entry raffle" style="background: #000000;text-align: center;min-height: 100vh;position: relative;height: 100%;float: left;width: 100%;">
     <div class="no-scale" style="width: 268px;height: 134px;margin-left: -109px;margin-top: -55px;background-repeat: no-repeat;position: absolute;left: 50%;top: 50%;background-image: radial-gradient(circle at top left, transparent 17px, #dc143c 17px), radial-gradient(circle at top right, transparent 17px, #dc143c 17px), radial-gradient(circle at bottom left, transparent 17px, #dc143c 17px), radial-gradient(circle at bottom right, transparent 17px, #dc143c 17px);box-shadow: 0 38px 14px -35px rgba(0,0,0,0.3);background-size: 50% 50%;background-position: top left, top right, bottom left, bottom right;">
-
       <div style="display: block; content: ''; position: absolute; box-sizing: border-box; color: #333;">
-        
       </div>
       <div style="display: block; content: ''; position: absolute; box-sizing: border-box; color: #333;">
-        
       </div>
-
       <div style="font-family: 'HelveticaNeue-CondensedBold', 'Arial Narrow', Impact, 'Roboto', sans-serif;letter-spacing: 2px;text-transform: uppercase;display: block;content: 'ticket';position: absolute;box-sizing: border-box;color: #b1bde9;width: 240px;height: 92px;padding-left: 40px;left: -7px;top: 17px;background-size: 7px 7px;background-repeat: repeat-y;background-position: 0 0, 0 0, 100% 0, 100% 0;/* background-image: linear-gradient(45deg, transparent 75%, #dc143c 75%), linear-gradient(135deg, transparent 75%, #dc143c 75%), linear-gradient(-45deg, transparent 75%, #dc143c 75%), linear-gradient(-135deg, transparent 75%, #dc143c 75%); */line-height: 1.9;font-size: 42px;text-align: left;">
-       <img src="${url}">
+       <img src="${url}" style="
+    width: 100px;
+">
       </div>
-
-      <div style="display: block;content: 'BB94CF';position: absolute;box-sizing: border-box;color: #ffffff;border-radius: 10px;transform: rotate(-90deg);font-size: 18px;/* font-family: monospace; */text-align: center;line-height: 1;width: 167px;height: 205px;padding-top: 163px;top: -36px;left: 8px;background: linear-gradient(to bottom, transparent 155px, #000000 155px, #000000 158px, transparent 158px);/* border: 3px solid #b1bde9; */">${
+      <div style="display: block;content: 'BB94CF';position: absolute;box-sizing: border-box;color: #ffffff;border-radius: 10px;transform: rotate(-90deg);font-size: 18px;/* font-family: monospace; */text-align: center;line-height: 1;width: 167px;height: 208px;padding-top: 163px;top: -36px;left: 8px;background: linear-gradient(to bottom, transparent 155px, #000000 155px, #000000 158px, transparent 158px);/* border: 3px solid #b1bde9; */">${
         ticketData.touristDestinationName
       }</div>
       
     </div>
   </div>
-    </body>
-</html>
+    </body></html>
 
     `);
   } catch (err) {

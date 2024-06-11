@@ -5,6 +5,7 @@ import cloudinary from "../../../utils/cloudinary.js";
 import { asyncHandler } from "../../../utils/errorHandling.js";
 
 export const createTouristDestination = asyncHandler(async (req, res, next) => {
+  
   const name = req.body.name.toLowerCase();
   const { cityId } = req.params;
   const city = await City.findById(cityId);
@@ -138,7 +139,6 @@ req.params.touristDestinationId,
 
   return res.status(200).json({ message: "Done", newTouristDestination });
 });
-
 
 export const getTouristDestinationsByCityId = asyncHandler(async(req,res,next)=>{
 
