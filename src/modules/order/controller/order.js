@@ -322,7 +322,7 @@ export const getAllOrders = asyncHandler(async (req, res, next) => {
 export const getSpecificTicket = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
 
-  const orders = await Order.findById(id, "-touristDestination -paymentType");
+  const orders = await Order.findById(id, " -paymentType").populate([{path:"userId",select:"-email -userName -wishList -forgetCode -confirmEmail -active -role -password "}]);
 
   return res.status(200).json({ orders });
 });
