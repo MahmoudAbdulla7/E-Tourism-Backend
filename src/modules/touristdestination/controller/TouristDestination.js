@@ -189,6 +189,7 @@ await cloudinary.api.delete_folder(folderPath);
 export const deleteTouristDestination = asyncHandler(async(req,res,next)=>{
 
   const touristDestination =await TouristDestination.findByIdAndDelete(req.params.touristDestinationId);
+  const city =await City.findById(touristDestination.cityId);
 
   if (!touristDestination) {
       return next(new Error(`touristDestination not found with id:${req.params.touristDestinationId}`, { cause: 404 }));
