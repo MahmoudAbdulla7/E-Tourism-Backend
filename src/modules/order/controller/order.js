@@ -148,23 +148,48 @@ export const webhook = asyncHandler(async (req, res) => {
 
   const ticketLink = `https://e-tourism-backend.vercel.app/order/${token}`;
   const emailContent = `
-<body style="border-radius: 25px;
-             color:white; background-color: rgba(33, 36, 41, 1); padding:7px;">
 
-<h2>Hello!</h2>
-<h3>Thank you for choosing us, and we look forward to welcoming you soon!</h3>
-<div style="border-radius: 25px;
-            background-color: rgba(24, 25, 29, 1); text-align: center; padding: 20px;">
-  <h3 >Your ticket to the ${order.touristDestination.name.toUpperCase()} has been successfully booked</h3>
-  <p>
-    <a href="${ticketLink}" style="text-align: center; border-radius: 25px; padding: 8px 30px; margin: auto; 
-background-color: #072248; color: white; text-decoration: none;">
-      <strong>View Your Ticket</strong>
-    </a>
-  </p>
-</div>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Ticket Confirmation</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0;">
+
+    <table role="presentation" align="center" width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: auto; border-collapse: collapse;">
+        <tr>
+            <td bgcolor="#F0F0F0" style="padding: 20px;">
+                <table role="presentation" align="center" width="100%" cellpadding="0" cellspacing="0" style="max-width: 500px;">
+                    <tr>
+                        <td bgcolor="#131550" align="center" style="padding: 20px; color: #ffffff;">
+                            <h1 style="margin: 0;">Egypt Here</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" style="padding: 20px;">
+                          <p><strong>Hello!</strong></p>
+                            <p>Thank you for choosing us, and we look forward to welcoming you soon!</p>
+                         
+                            <p>Your ticket for the <strong>${order.touristDestination.name.toUpperCase()}</strong> has been successfully booked!</p>
+                            <p>Click the button below to view your ticket:</p>
+                            <table role="presentation" align="center" cellpadding="0" cellspacing="0" style="margin-top: 20px;">
+                                <tr>
+                                    <td bgcolor="#131550" style="border-radius: 5px;">
+                                        <a href="${ticketLink}" target="_blank" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #ffffff; text-decoration: none;">View Your Ticket</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 
 </body>
+</html>
   `;
 
   await sendEmail({
