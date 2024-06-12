@@ -173,7 +173,7 @@ background-color: #072248; color: white; text-decoration: none;">
     html: emailContent,
   });
 
-  res.status(200).json({ message: "Ticket is placed" });
+  res.status(201).json({ message: "Ticket is placed" });
 });
 
 export const getTicket = asyncHandler(async (req, res, next) => {
@@ -189,7 +189,6 @@ export const getTicket = asyncHandler(async (req, res, next) => {
     const url = await QRCode.toDataURL(`${frontEndLink}`);
 
     return res.status(200).send(`
-
       <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -208,15 +207,13 @@ export const getTicket = asyncHandler(async (req, res, next) => {
             </div>
             <h2 style="text-align: center; color: #333; margin: 0;">${ticketData.touristDestinationName}</h2>
             <p style="text-align: center; color: #666; margin-top: 10px;">Welcome to an unforgettable experience!</p>
-           
         </div>
         <div style="background-color:#131550; color: white; padding: 10px; text-align: center;">
             <p style="margin: 0;">Please present this ticket at the entrance</p>
         </div>
     </div>
 </body>
-</html>
-    `);
+</html>`);
   } catch (err) {
     return next(new Error(err, { cause: 500 }));
   }
