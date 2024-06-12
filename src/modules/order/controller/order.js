@@ -289,7 +289,7 @@ export const getAllOrders = asyncHandler(async (req, res, next) => {
 
   if (filterByDay === "true") {
     const date = new Date();
-    date.setDate(date.getDate() + 1);
+    // date.setDate(date.getDate() + 1);
     const currentDay = date.toISOString();
 
     date.setDate(date.getDate() + 1);
