@@ -190,31 +190,32 @@ export const getTicket = asyncHandler(async (req, res, next) => {
 
     return res.status(200).send(`
 
-      <html><head>
-        <title>${ticketData.touristDestinationName.toUpperCase()} Ticket</title>
-        </head>
-
-      <body style="line-height: 1; margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline;" cz-shortcut-listen="true">
-
-  <div id="raffle-red" class="entry raffle" style="background: #000000;text-align: center;min-height: 100vh;position: relative;height: 100%;float: left;width: 100%;">
-    <div class="no-scale" style="width: 268px;height: 134px;margin-left: -109px;margin-top: -55px;background-repeat: no-repeat;position: absolute;left: 50%;top: 50%;background-image: radial-gradient(circle at top left, transparent 17px, #dc143c 17px), radial-gradient(circle at top right, transparent 17px, #dc143c 17px), radial-gradient(circle at bottom left, transparent 17px, #dc143c 17px), radial-gradient(circle at bottom right, transparent 17px, #dc143c 17px);box-shadow: 0 38px 14px -35px rgba(0,0,0,0.3);background-size: 50% 50%;background-position: top left, top right, bottom left, bottom right;">
-      <div style="display: block; content: ''; position: absolute; box-sizing: border-box; color: #333;">
-      </div>
-      <div style="display: block; content: ''; position: absolute; box-sizing: border-box; color: #333;">
-      </div>
-      <div style="font-family: 'HelveticaNeue-CondensedBold', 'Arial Narrow', Impact, 'Roboto', sans-serif;letter-spacing: 2px;text-transform: uppercase;display: block;content: 'ticket';position: absolute;box-sizing: border-box;color: #b1bde9;width: 240px;height: 92px;padding-left: 40px;left: -7px;top: 17px;background-size: 7px 7px;background-repeat: repeat-y;background-position: 0 0, 0 0, 100% 0, 100% 0;/* background-image: linear-gradient(45deg, transparent 75%, #dc143c 75%), linear-gradient(135deg, transparent 75%, #dc143c 75%), linear-gradient(-45deg, transparent 75%, #dc143c 75%), linear-gradient(-135deg, transparent 75%, #dc143c 75%); */line-height: 1.9;font-size: 42px;text-align: left;">
-       <img src="${url}" style="
-    width: 100px;
-">
-      </div>
-      <div style="display: block;content: 'BB94CF';position: absolute;box-sizing: border-box;color: #ffffff;border-radius: 10px;transform: rotate(-90deg);font-size: 18px;/* font-family: monospace; */text-align: center;line-height: 1;width: 167px;height: 208px;padding-top: 163px;top: -36px;left: 8px;background: linear-gradient(to bottom, transparent 155px, #000000 155px, #000000 158px, transparent 158px);/* border: 3px solid #b1bde9; */">${
-        ticketData.touristDestinationName
-      }</div>
-      
+      <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${ticketData.touristDestinationName.toUpperCase()} Ticket</title>
+</head>
+<body style="font-family: Arial, sans-serif; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f4;">
+    <div style="background-color: white; border: 2px solid #131550; border-radius: 10px; width: 350px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); overflow: hidden;">
+        <div style="background-color:#131550; color: white; padding: 15px; text-align: center;">
+            <h1 style="margin: 0; font-size: 24px;">Egypt Here</h1>
+        </div>
+        <div style="padding: 20px;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img src="${url}" alt="QR Code" style="width: 150px; height: 150px; border: 2px solid #333; border-radius: 5px;">
+            </div>
+            <h2 style="text-align: center; color: #333; margin: 0;">${ticketData.touristDestinationName}</h2>
+            <p style="text-align: center; color: #666; margin-top: 10px;">Welcome to an unforgettable experience!</p>
+           
+        </div>
+        <div style="background-color:#131550; color: white; padding: 10px; text-align: center;">
+            <p style="margin: 0;">Please present this ticket at the entrance</p>
+        </div>
     </div>
-  </div>
-    </body></html>
-
+</body>
+</html>
     `);
   } catch (err) {
     return next(new Error(err, { cause: 500 }));
