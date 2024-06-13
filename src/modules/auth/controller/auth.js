@@ -48,7 +48,7 @@ export const confirmationToken = asyncHandler(async (req, res, next) => {
     return next(new Error("in-valid email"));
   };
 
-  return res.status(200).redirect(`${process.env.Front_End}/confirm-email`);
+  return res.status(200).redirect(`${process.env.Front_End}`);
 });
 
 export const unsubscribe = asyncHandler(async (req, res, next) => {
