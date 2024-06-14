@@ -27,7 +27,7 @@ export const updateComment = asyncHandler(async(req,res,next)=>{
     const {touristDestinationId,reviewId}=req.params;
     const review= await Review.findOneAndUpdate({_id:reviewId,touristDestinationId},req.body,{new:true});
 
-    if (review.comment!==req.body.comment || review.rating!==req.body.rating) {
+    if (review.comment!==req.body.comment && review.rating!==req.body.rating) {
         return next(new Error("Failed",{cause:500}));
     }
     return res.status(200).json({message:"comment is updated successfully"});
