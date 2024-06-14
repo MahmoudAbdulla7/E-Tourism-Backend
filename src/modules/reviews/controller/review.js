@@ -44,7 +44,10 @@ export const deleteComment = asyncHandler(async(req,res,next)=>{
 
 export const getAllReviews = asyncHandler(async(req,res,next)=>{
 
-    const reviews= await Review.find({touristDestinationId:req.params.touristDestinationId});
+    const reviews= await Review.find({touristDestinationId:req.params.touristDestinationId}).populate[{
+        path:"userId",
+        select:"-email -password -role -confirmEmail -active -DOB -faceId -forgetCode -changePassword"
+    }];
     return res.status(200).json({reviews});
 
 });
