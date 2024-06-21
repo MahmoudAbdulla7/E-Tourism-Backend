@@ -272,7 +272,7 @@ export const cancelOrder = asyncHandler(async (req, res, next) => {
 
   const canceledOrder = await Order.findOneAndUpdate(
     { _id: orderId },
-    { status: "canceled", reason, updatedBy: req.user._id }
+    { status: "canceled", reason, updatedBy: req.user._id },{new:true}
   );
 
   return res.status(200).json({ message: "order is canceled successfully",ticketStatus:canceledOrder.status });
