@@ -275,11 +275,7 @@ export const cancelOrder = asyncHandler(async (req, res, next) => {
     { status: "canceled", reason, updatedBy: req.user._id }
   );
 
-  if (!canceledOrder.reason) {
-    return next(new Error(`fail to cancel your order `, { cause: 400 }));
-  }
-
-  return res.status(200).json({ message: "order is canceled successfully" });
+  return res.status(200).json({ message: "order is canceled successfully",ticketStatus:canceledOrder.status });
 });
 
 export const updateByInspector = asyncHandler(async (req, res, next) => {
