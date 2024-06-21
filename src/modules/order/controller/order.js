@@ -147,50 +147,50 @@ export const webhook = asyncHandler(async (req, res) => {
   });
 
   const ticketLink = `https://e-tourism-backend.vercel.app/order/${token}`;
-  const emailContent = `
-
-  <!DOCTYPE html>
+  const emailContent = `<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Ticket Confirmation</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Ticket Confirmation</title>
 </head>
+
 <body style="font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0;">
 
-    <table role="presentation" align="center" width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: auto; border-collapse: collapse;">
-        <tr>
-            <td bgcolor="#F0F0F0" style="padding: 20px;">
-                <table role="presentation" align="center" width="100%" cellpadding="0" cellspacing="0" style="max-width: 500px;">
-                    <tr>
-                        <td bgcolor="#131550" align="center" style="padding: 20px; color: #ffffff;">
-                            <h1 style="margin: 0;">Egypt Here</h1>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td bgcolor="#ffffff" style="padding: 20px;">
-                          <p><strong>Hello!</strong></p>
-                            <p>Thank you for choosing us, and we look forward to welcoming you soon!</p>
-                         
-                            <p>Your ticket for the <strong>${order.touristDestination.name.toUpperCase()}</strong> has been successfully booked!</p>
-                            <p>Click the button below to view your ticket:</p>
-                            <table role="presentation" align="center" cellpadding="0" cellspacing="0" style="margin-top: 20px;">
-                                <tr>
-                                    <td bgcolor="#131550" style="border-radius: 5px;">
-                                        <a href="${ticketLink}" target="_blank" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #ffffff; text-decoration: none;">View Your Ticket</a>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
+  <table role="presentation" align="center" width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: auto; border-collapse: collapse;">
+    <tr>
+      <td bgcolor="#F0F0F0" style="padding: 20px;">
+        <table role="presentation" align="center" width="100%" cellpadding="0" cellspacing="0" style="max-width: 500px;">
+          <tr>
+            <td bgcolor="#131550" align="center" style="padding: 20px; color: #ffffff;">
+              <h1 style="margin: 0;">Egypt Here</h1>
             </td>
-        </tr>
-    </table>
+          </tr>
+          <tr>
+            <td bgcolor="#ffffff" style="padding: 20px;">
+              <p><strong>Hello!</strong></p>
+              <p>Thank you for choosing us, and we look forward to welcoming you soon!</p>
+              <p>Your ticket for the <strong>${order.touristDestination.name.toUpperCase()}</strong> has been successfully booked!</p>
+              <p>Date of visit: ${order.DateOfVisit}</p> <!-- Add the date of the visit here -->
+              <p>Click the button below to view your ticket:</p>
+              <table role="presentation" align="center" cellpadding="0" cellspacing="0" style="margin-top: 20px;">
+                <tr>
+                  <td bgcolor="#131550" style="border-radius: 5px;">
+                    <a href="${ticketLink}" target="_blank" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #ffffff; text-decoration: none;">View Your Ticket</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 
 </body>
-</html>
-  `;
+
+</html>`;
 
   await sendEmail({
     to: user.email,
@@ -202,6 +202,7 @@ export const webhook = asyncHandler(async (req, res) => {
 });
 
 export const getTicket = asyncHandler(async (req, res, next) => {
+
   const { token } = req.params;
   const ticketData = verifyToken({
     token,
@@ -354,6 +355,19 @@ export const getSpecificTicket = asyncHandler(async (req, res, next) => {
       path: "userId",
       select:
         "-email -userName -wishList -forgetCode -confirmEmail -active -role -password ",
+    },
+  ]);
+
+  return res.status(200).json({ orders });
+});
+
+export const getMyTickets = asyncHandler(async (req, res, next) => {
+
+
+  const orders = await Order.find({userId:req.user._id}).populate([
+    {
+      path: "userId",
+      select: "-forgetCode -confirmEmail -password",
     },
   ]);
 

@@ -5,4 +5,5 @@ export const endPoint ={
     cancel:[roles.User],
     update:[roles.Inspector],
     getAll:[roles.Inspector],
+    getMyTickets:[roles.User],
 }

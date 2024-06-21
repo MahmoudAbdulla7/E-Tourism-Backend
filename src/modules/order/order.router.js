@@ -16,6 +16,8 @@ router.get('/:token',validation(validator.getTicket), orderController.getTicket)
 
 router.get('/filter-by-day/:filterByDay',validation(validator.filterTicketsByDay),auth(endPoint.getAll), orderController.getAllOrders);
 
+router.get('/own/tickets',auth(endPoint.getMyTickets), orderController.getMyTickets);
+
 router.get('/filter-by-id/:id',validation(validator.getSpecificTicket),auth(endPoint.getAll), orderController.getSpecificTicket);
 
 router.patch('/update-by-inspector/:orderId',validation(validator.update),auth(endPoint.update), orderController.updateByInspector);
